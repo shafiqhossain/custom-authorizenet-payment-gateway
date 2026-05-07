@@ -1,0 +1,15 @@
+name: Commerce Mrspay
+type: module
+description: 'Provides Commerce integration for Mrspay.'
+package: MRS
+core_version_requirement: ^9.2 || ^10 || ^11
+dependencies:
+  - commerce:commerce
+  - commerce:commerce_payment
+  - mrs_base:mrs_base
+  - authnet:authnet
+  - activitylogs:activitylogs
+
+version: '1.0'
+project: 'commerce_mrspay'
+datestamp: 1725530624

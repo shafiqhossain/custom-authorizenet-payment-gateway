@@ -1,0 +1,8 @@
+services:
+  commerce_mrspay.helper:
+    class: Drupal\commerce_mrspay\Service\MrsPayHelper
+    arguments: ['@entity_type.manager', '@current_user', '@database', '@logger.factory', '@messenger', '@config.factory', '@commerce_cart.cart_provider', '@extension.list.module']
+
+  commerce_mrspay.mail_manager:
+    class: Drupal\commerce_mrspay\Service\MrsPayMailManager
+    arguments: ['@entity_type.manager', '@current_user', '@database', '@logger.factory', '@messenger', '@config.factory', '@stream_wrapper_manager', '@email_factory', '@base.helper']

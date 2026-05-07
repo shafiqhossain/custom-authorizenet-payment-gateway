@@ -1,0 +1,58 @@
+.checkout-pane-payment-information {
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+
+  .fieldset--payment-information--payment-method {
+    legend {
+      font-size: 18px;
+    }
+  }
+
+  .fieldset--payment-information--add-payment-method--payment-details--mrs-payment-type {
+    legend {
+      font-size: 18px;
+    }
+  }
+
+  .fieldset--payment-information-add-payment-method-payment-details-card-details {
+    legend {
+      font-size: 18px;
+    }
+  }
+
+  .mrspay-credit-card-name-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+    column-gap: 15px;
+
+    .form-item-payment-information-add-payment-method-payment-details-card-details-first-name,
+    .form-item-payment-information-add-payment-method-payment-details-card-details-last-name {
+      width: 100%;
+      flex: 1 1 0;
+
+      label {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .mrspay-credit-card-expiry-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+    column-gap: 15px;
+
+    .form-item-payment-information-add-payment-method-payment-details-card-details-expire-month,
+    .form-item-payment-information-add-payment-method-payment-details-card-details-expire-year,
+    .form-item-payment-information-add-payment-method-payment-details-card-details-card-cvc {
+      width: 100%;
+      flex: 1 1 0;
+
+      label {
+        font-weight: bold;
+      }
+    }
+  }
+
+}

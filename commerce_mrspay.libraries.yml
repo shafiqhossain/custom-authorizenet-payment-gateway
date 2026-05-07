@@ -1,0 +1,19 @@
+mrspay-style:
+  version: VERSION
+  js:
+    assets/js/commerce_mrspay_cardswipe.js: {}
+  css:
+    theme:
+      assets/css/commerce_mrspay.css: {}
+      assets/css/credit_card_icons.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - core/jquery
+
+credit_card_icons:
+  version: VERSION
+  css:
+    theme:
+      assets/css/credit_card_icons.css: {}

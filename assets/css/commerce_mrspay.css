@@ -1,0 +1,47 @@
+.checkout-pane-payment-information {
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+}
+.checkout-pane-payment-information .fieldset--payment-information--payment-method legend {
+  font-size: 18px;
+}
+.checkout-pane-payment-information .fieldset--payment-information--add-payment-method--payment-details--mrs-payment-type legend {
+  font-size: 18px;
+}
+.checkout-pane-payment-information .fieldset--payment-information-add-payment-method-payment-details-card-details legend {
+  font-size: 18px;
+}
+.checkout-pane-payment-information .mrspay-credit-card-name-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  column-gap: 15px;
+}
+.checkout-pane-payment-information .mrspay-credit-card-name-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-first-name,
+.checkout-pane-payment-information .mrspay-credit-card-name-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-last-name {
+  width: 100%;
+  flex: 1 1 0;
+}
+.checkout-pane-payment-information .mrspay-credit-card-name-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-first-name label,
+.checkout-pane-payment-information .mrspay-credit-card-name-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-last-name label {
+  font-weight: bold;
+}
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  column-gap: 15px;
+}
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-expire-month,
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-expire-year,
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-card-cvc {
+  width: 100%;
+  flex: 1 1 0;
+}
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-expire-month label,
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-expire-year label,
+.checkout-pane-payment-information .mrspay-credit-card-expiry-wrapper .form-item-payment-information-add-payment-method-payment-details-card-details-card-cvc label {
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=commerce_mrspay.css.map */

@@ -1,0 +1,147 @@
+<?php
+
+/**
+ * @file
+ * Defines common functionality for the commerce_mrspay module.
+ */
+
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_theme().
+ */
+function commerce_mrspay_theme() {
+  return [
+    'commerce_mrspay_credit_card_logos' => [
+      'variables' => [
+        'credit_cards' => [],
+      ],
+    ],
+  ];
+}
+
+
+
+/**
+ * Implements hook_preprocess_commerce_checkout_completion_message().
+ */
+function commerce_mrspay_preprocess_commerce_checkout_completion_message(&$variables) {
+  /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+  $order = $variables['order_entity'];
+  if (!$order) {
+    return;
+  }
+
+  $variables['order_id'] = $order->id();
+
+  /* ---------------------------------------------------------
+   * CLINIC NODE
+   * --------------------------------------------------------- */
+  $clinic_nid = 0;
+  if ($order->hasField('field_clinic_name') && !$order->get('field_clinic_name')->isEmpty()) {
+    $clinic_nid = $order->get('field_clinic_name')->target_id;
+  }
+  $variables['clinic_nid'] = $clinic_nid;
+
+  /* ---------------------------------------------------------
+   * CHECK IF ANY LINE ITEM PRODUCT TYPE = 'supplies'
+   * --------------------------------------------------------- */
+  $found_supplies = FALSE;
+  $line_items = $order->get('order_items')->referencedEntities();
+
+  foreach ($line_items as $item) {
+    $purchased_entity = $item->getPurchasedEntity();
+    if ($purchased_entity && $purchased_entity->bundle() === 'supplies') {
+      $found_supplies = TRUE;
+      break;
+    }
+  }
+
+  $variables['found_supplies'] = $found_supplies;
+  $prescriptions = [
+    'signed' => [],
+    'nonsigned' => [],
+  ];
+
+  /* ---------------------------------------------------------
+   * FIND REFILL PRESCRIPTIONS FOR SUPPLIES LINE ITEMS
+   * --------------------------------------------------------- */
+  if ($found_supplies) {
+    foreach ($line_items as $item) {
+      $product = $item->getPurchasedEntity();
+      if (!$product) {
+        continue;
+      }
+
+      if ($product->hasField('field_prescription_type')) {
+        $antigen_type = $product->get('field_prescription_type')->value;
+
+        if ($antigen_type) {
+          // Load refill_prescription node
+          $query = \Drupal::entityQuery('node')
+            ->condition('type', 'refill_prescription')
+            ->condition('status', 1)
+            ->condition('field_prescription_type', $antigen_type)
+            ->condition('field_clinic_name', $clinic_nid)
+            ->sort('created', 'DESC')
+            ->range(0, 1);
+
+          $nids = $query->execute();
+
+          if ($nids) {
+            $refill = \Drupal\node\Entity\Node::load(reset($nids));
+
+            if ($refill) {
+              $approved = $refill->get('field_physician_signature_approv')->value ?? 0;
+              $target = $approved ? 'signed' : 'nonsigned';
+
+              $prescriptions[$target][$refill->id()] = [
+                'nid' => $refill->id(),
+                'title' => $refill->label(),
+                'type' => $antigen_type,
+              ];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  $variables['prescriptions'] = $prescriptions;
+
+  /* ---------------------------------------------------------
+   * CHECK IF NOTHING FOUND
+   * --------------------------------------------------------- */
+  $show_not_found_message = (
+    empty($prescriptions['signed']) &&
+    empty($prescriptions['nonsigned'])
+  );
+
+  $variables['show_not_found_message'] = $show_not_found_message;
+
+  /* ---------------------------------------------------------
+   * USER ROLE LOGIC
+   * --------------------------------------------------------- */
+  $account = $order->getCustomer();
+  $roles = $account->getRoles();
+
+  $variables['is_admin_or_rep'] = (
+    in_array('administrator', $roles) ||
+    in_array('clinic_provider_representative', $roles)
+  );
+
+  /* ---------------------------------------------------------
+   * Links
+   * --------------------------------------------------------- */
+  $variables['order_detail_url'] = Url::fromRoute(
+    'entity.commerce_order.user_view',
+    [
+      'user' => $order->getCustomerId(),
+      'commerce_order' => $order->id(),
+    ]
+  )->toString();
+
+  $variables['dashboard_url'] = \Drupal::request()->getSchemeAndHttpHost();
+}
