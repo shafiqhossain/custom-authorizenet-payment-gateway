@@ -1,2 +1,2 @@
-# custom-authorizenet-payment-gateway
-A custom authorize.net payment gateway
+# Custom Payment Gateway
+A custom authorize.net payment gateway based on special need.
